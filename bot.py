@@ -1,10 +1,11 @@
 from telegram.ext import (
     Application,
     CommandHandler,
+    CallbackQueryHandler,
 )
 
 from config import BOT_TOKEN
-from handlers import start, calendar
+from handlers import start, calendar, button
 
 
 def main():
@@ -16,6 +17,7 @@ def main():
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("calendar", calendar))
+    app.add_handler(CallbackQueryHandler(button))
 
     print("✅ Smart Calendar Bot is running...")
 
