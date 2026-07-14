@@ -1,10 +1,9 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from calendar_utils import get_month
 
-from calendar_utils import get_current_month
 
-
-def calendar_keyboard():
-    year, month, month_name, cal = get_current_month()
+def calendar_keyboard(year=None, month=None):
+    year, month, month_name, cal = get_month(year, month)
 
     keyboard = []
 
@@ -19,30 +18,36 @@ def calendar_keyboard():
     ])
 
     for week in cal:
-
         row = []
 
         for day in week:
-
             if day == 0:
                 row.append(
                     InlineKeyboardButton(" ", callback_data="ignore")
                 )
-
             else:
                 row.append(
                     InlineKeyboardButton(
                         str(day),
-                        callback_data=f"day:{day}"
+                        callback_data=f"date:{year}:{month}:{day}"
                     )
                 )
 
         keyboard.append(row)
 
     keyboard.append([
-        InlineKeyboardButton("⬅️", callback_data="prev"),
-        InlineKeyboardButton(month_name, callback_data="ignore"),
-        InlineKeyboardButton("➡️", callback_data="next"),
+        InlineKeyboardButton(
+            "⬅️",
+            callback_data=f"prev:{year}:{month}"
+        ),
+        InlineKeyboardButton(
+            month_name,
+            callback_data="ignore"
+        ),
+        InlineKeyboardButton(
+            "➡️",
+            callback_data=f"next:{year}:{month}"
+        ),
     ])
 
     return InlineKeyboardMarkup(keyboard)
